@@ -5,7 +5,9 @@ logger = logging.getLogger(__name__)
 
 class PyreGroup(object):
 
-    def __init__(self, name, peers={}):
+    def __init__(self, name, peers=None):
+        if peers is None:
+            peers = {}
         self.name = name
         # TODO perhaps warn if peers is not a set type
         self.peers = peers

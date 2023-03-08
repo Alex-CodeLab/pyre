@@ -26,7 +26,7 @@ class PyreEvent(object):
         if self.type == "ENTER":
             self.headers = json.loads(incoming.pop(0).decode('utf-8'))
             self.peer_addr = incoming.pop(0).decode('utf-8')
-        elif self.type == "JOIN" or self.type == "LEAVE":
+        elif self.type in ["JOIN", "LEAVE"]:
             self.group = incoming.pop(0).decode('utf-8')
         elif self.type == "WHISPER":
             self.msg = incoming
@@ -43,9 +43,7 @@ class PyreEvent(object):
         Returns:
             str: Header value
         """
-        if self.headers and name in self.headers:
-            return self.headers[name]
-        return None
+        return self.headers[name] if self.headers and name in self.headers else None
 
     @property
     def peer_uuid(self):
@@ -57,4 +55,4 @@ class PyreEvent(object):
         return uuid.UUID(bytes=self.peer_uuid_bytes)
 
     def __str__(self):
-        return '<%s %s from %s>'%(__name__, self.type, self.peer_uuid.hex)
+        return f'<{__name__} {self.type} from {self.peer_uuid.hex}>'
